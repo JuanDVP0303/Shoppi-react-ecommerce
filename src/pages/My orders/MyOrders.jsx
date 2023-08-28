@@ -67,7 +67,7 @@ export function OrderIndividual() {
           return (
             <article
               key={product.id}
-              className="flex relative  w-full h-[140px] border border-black overflow-hidden rounded-lg"
+              className="flex relative  w-[80%] h-[140px] border border-black overflow-hidden rounded-lg"
             >
               <figure className="border-r border-black p-2 w-[30%] flex justify-center flex-shrink-0">
                 <img

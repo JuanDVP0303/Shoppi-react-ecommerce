@@ -3,7 +3,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import "./styles.css";
 import { useState } from "react";
 import propTypes from "prop-types";
-import {useEffect} from "React"
+import {useEffect} from "react"
 export default function CheckCart() {
   const { cartProducts, updateTotalPrice, setOrder, order, setCartProducts, setCount } = useShopiContext();
   const [totalPrice, setTotalPrice] = useState(0)
