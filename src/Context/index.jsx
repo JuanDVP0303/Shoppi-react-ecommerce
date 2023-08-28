@@ -37,7 +37,7 @@ function ShoppingCartProvider({ children }) {
   const [count, setCount] = useState(0);
   const handleCount = () => {
     setCount(count + 1);
-  };
+  }
 
   //Shopping cart add product
   const [cartProducts, setCartProducts] = useState([]);

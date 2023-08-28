@@ -55,7 +55,7 @@ function SignIn() {
             />
           </div>
           <div className="flex flex-col md:items-center">
-            <label htmlFor="Password">Password</label>
+            <label htmlFor="password">Password</label>
             <input
             required
               id="password"
