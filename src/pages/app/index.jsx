@@ -25,7 +25,11 @@ const Layout = ({ children }) => {
       {children}
       </>
     ) : (
-    <SignIn/>)
+      <>
+      <Navbar/>
+      <SignIn/>
+      {children}
+    </>)
     
     }
       

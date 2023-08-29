@@ -8,12 +8,13 @@ import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 const NavItem = ({ activeStyle, to, children, isCategory, onClick }) => {
   const mobileView = isCategory ? "hidden lg:block" : null;
+  console.log(activeStyle)
   return (
     <NavLink
       to={to}
       className={({ isActive }) => {
         return `${isCategory ? mobileView : ""} ${
-          isActive ? { activeStyle } : ""
+          isActive ? `${activeStyle}`  : ""
         }`;
       }}
       onClick={() => onClick(false)}
@@ -35,15 +36,15 @@ function Navbar() {
   const { order } = useShopiContext();
   const { count, scaled, email } = useShopiContext();
   const [categories, setCategories] = useState(null);
-  const [isShow, setIsShow] = useState(false);
+  const [isShowDisplayMenu, setIsShowDisplayMenu] = useState(false);
   const activeStyle = "underline font-bold underline-offset-4";
 
-  const handleIsShow = (showOrNot) => {
+  const handleIsShowDisplayMenu = (showOrNot) => {
     if(showOrNot == false) {
-      setIsShow(false)
+      setIsShowDisplayMenu(false)
       return
     }
-    setIsShow(!isShow);
+    setIsShowDisplayMenu(!isShowDisplayMenu);
   };
 
   useEffect(() => {
@@ -74,9 +75,9 @@ function Navbar() {
   return (
     <header className="fixed  z-10 top-0 w-full bg-white py-2">
       <nav className=" flex justify-between flex-row md:flex-row  ml-5 mr-5">
-        <ul className="flex gap-4 ">
+        <ul className="flex gap-4">
           <li>
-            <NavItem activeStyle={activeStyle} to={toEmail} onClick={handleIsShow}>
+            <NavItem activeStyle={activeStyle} to={toEmail} onClick={handleIsShowDisplayMenu}>
               <span className="font-bold text-green-600">
                 Shop
               </span>
@@ -95,7 +96,7 @@ function Navbar() {
                         activeStyle={activeStyle}
                         isCategory={true}
                         to={`category/men-clothes`}
-                        onClick={handleIsShow}
+                        onClick={handleIsShowDisplayMenu}
                       >
                         {category[0].toUpperCase() +
                           category.slice(1, category.length)}
@@ -110,7 +111,7 @@ function Navbar() {
                         activeStyle={activeStyle}
                         isCategory={true}
                         to={`category/women-clothes`}
-                        onClick={handleIsShow}
+                        onClick={handleIsShowDisplayMenu}
                       >
                         {category[0].toUpperCase() +
                           category.slice(1, category.length)}
@@ -124,7 +125,7 @@ function Navbar() {
                       activeStyle={activeStyle}
                       isCategory={true}
                       to={`category/${category}`}
-                      onClick={handleIsShow}
+                      onClick={handleIsShowDisplayMenu}
                     >
                       {category[0].toUpperCase() +
                         category.slice(1, category.length)}
@@ -138,13 +139,13 @@ function Navbar() {
           className={`${
             scaled ? "scale-150" : null
           }  h-6 w-6 mr-1 transition-transform z-10 md:hidden`}
-          onClick={handleIsShow}
+          onClick={handleIsShowDisplayMenu}
         >
           <ThreePoints />
         </button>
         <ul
           className={`flex gap-4 flex-col md:flex-row bg-white p-3  md:p-0 rounded-lg absolute md:static pointer-events-auto  md:z-10 z-[-1] top-[40px] right-0 ${
-            isShow ? "flex " : "hidden md:flex"
+            isShowDisplayMenu ? "flex " : "hidden md:flex"
           }`}
         >
           <li>
@@ -153,7 +154,7 @@ function Navbar() {
           {userDataArray.map(({ title, to }, i) => {
             return (
               <li key={i}>
-                <NavItem activeStyle={activeStyle} to={`/${to}`} onClick={handleIsShow}>
+                <NavItem activeStyle={activeStyle} to={`/${to}`} onClick={handleIsShowDisplayMenu}>
                   <span className="px-1">{title}</span>
                   {title == "Orders" ? (
                     <span className="text-red-600 font-bold">
@@ -166,7 +167,7 @@ function Navbar() {
           })}
 
           <li>
-            <NavItem to={`/shopping-cart`} activeStyle={activeStyle} onClick={handleIsShow}>
+            <NavItem to={`/shopping-cart`} activeStyle={activeStyle} onClick={handleIsShowDisplayMenu}>
               <div className="flex ">
                 <ShoppingCartIcon
                   className={`${

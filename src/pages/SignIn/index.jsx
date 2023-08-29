@@ -23,7 +23,7 @@ function SignIn() {
   };
 
   return (
-    <section className="w-full h-screen flex justify-center items-center ">
+    <section className="w-full h-screen flex justify-center items-center mt-10 ">
       <div className=" border border-gray-400 rounded-lg w-[50vmax] h-[80vmax] md:h-[40vmax]">
         <div className="flex justify-center mt-8">
           <h1 className="text-2xl md:text-3xl font-bold ">
