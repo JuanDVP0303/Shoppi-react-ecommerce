@@ -8,7 +8,6 @@ import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 const NavItem = ({ activeStyle, to, children, isCategory, onClick }) => {
   const mobileView = isCategory ? "hidden lg:block" : null;
-  console.log(activeStyle)
   return (
     <NavLink
       to={to}
