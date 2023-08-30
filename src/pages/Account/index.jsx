@@ -188,7 +188,7 @@ const refForm = useRef(null);
             setUserWantAccount(true);
           }}
         >
-          Have you not got have an account already?
+          Have you not got an account already?
         </button>
         </div>
       </div>
