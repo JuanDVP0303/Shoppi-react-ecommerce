@@ -7,9 +7,31 @@ import { getProducts } from "../callApi";
 
 function ShoppingCartProvider({ children }) {
   //Manejador del email en login, datos
-  const [email, setEmail] = useState(localStorage.getItem("email"))
-  const [fullName, setFullName] = useState(localStorage.getItem("fullName"))
-  const [password, setPassword] = useState(localStorage.getItem("password"))
+  const [userData, setUserData] = useState({})
+  const [actualUser, setActualUser] = useState(JSON.parse(localStorage.getItem("actualUser")))
+  const allUsers = []
+  for(let i = 0; i < localStorage.length; i++){
+    const localKey = localStorage.key(i)
+    if(localKey == "web-vitals-extension-metrics") continue
+    allUsers.push(JSON.parse(localStorage.getItem(`${localKey}`)))
+  }
+
+
+  useEffect(() => {
+    if(Object.keys(userData).length == 0 ) return
+    localStorage.setItem(`${userData.fullName}`, JSON.stringify(userData))
+  }, [userData])
+
+  useEffect(() => {
+    if(actualUser == null) return
+    localStorage.setItem("actualUser", JSON.stringify(actualUser))
+  }, [userData, actualUser])
+
+
+  const resetData = () => {
+    setActualUser(null)
+    localStorage.removeItem("actualUser")
+  }
 
   //Get fetch products 
   const [itemsToGet, setItemsToGet] = useState(null);
@@ -102,12 +124,12 @@ function ShoppingCartProvider({ children }) {
   return (
     <shoppingCartContext.Provider
       value={{
-        email,
-        setEmail,
-        setFullName,
-        fullName,
-        setPassword,
-        password,
+        resetData,
+        setUserData,
+        userData,
+        actualUser,
+        setActualUser,
+        allUsers,
         handleIsProductDetailOpen,
         itemsToGet,
         isProductDetailOpen,

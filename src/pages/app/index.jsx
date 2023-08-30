@@ -5,34 +5,20 @@ import Navbar from "../../components/Navbar";
 import Home from "../home";
 import MyAccount from "../MyAccount";
 import NotFound from "../NotFound";
-import SignIn from "../SignIn";
+import AccountForm from "../Account";
 import ShoppingCartProvider from "../../Context";
 import CheckCart from "../../CheckoutCart/index";
 import MyOrder from "../My orders/MyOrders"
 import "./App.css";
 import Categories from "../AllCategories";
-import { useShopiContext } from "../../Context/context";
+
 
 
 const Layout = ({ children }) => {
-  const {email,password, fullName} = useShopiContext()
-  const isDataInOrder = email && password && fullName ? true : false
   return (
     <>
-    {isDataInOrder ? (
-      <>
       <Navbar />
-      {children}
-      </>
-    ) : (
-      <>
-      <Navbar/>
-      <SignIn/>
-      {children}
-    </>)
-    
-    }
-      
+      {children}      
     </>
   );
 };
@@ -45,7 +31,11 @@ const AppRoutes = () => {
   let routes = useRoutes([
     {
       path: "/",
-      element: <SignIn />,
+      element: <Home/>
+    },
+    {
+      path: "/sign-in",
+      element: <AccountForm />,
     },
     {
       path: "/home",
@@ -77,6 +67,7 @@ const AppRoutes = () => {
       path: "/shopping-cart",
       element: <CheckCart />,
     },
+
   ]);
 
   return routes;

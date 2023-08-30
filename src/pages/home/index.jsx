@@ -11,9 +11,7 @@ function Home() {
     handleProductToShow,
     addToList,
     itemsToGet,
-    email,
-    password,
-    fullName
+
 
   } = useShopiContext();
   const [itemsToShow, setItemsToShow] = useState(null);
@@ -22,12 +20,6 @@ function Home() {
     if (itemsToGet == null) return;
     setItemsToShow(itemsToGet);
   }, [itemsToGet]);
-
-  useEffect(() => {
-    localStorage.setItem("email", email) 
-    localStorage.setItem("fullName", fullName) 
-    localStorage.setItem("password", password) 
-  }, [email, password, fullName]);
 
   const showProductDetail = (object) => {
     handleIsProductDetailOpen();

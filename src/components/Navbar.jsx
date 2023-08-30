@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
-import propTypes from "prop-types";
 import { useShopiContext } from "../Context/context";
 import { getProducts } from "../callApi";
 import { useEffect } from "react";
 import { useState } from "react";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import propTypes from "prop-types";
+
 
 const NavItem = ({ activeStyle, to, children, isCategory, onClick }) => {
   const mobileView = isCategory ? "hidden lg:block" : null;
@@ -13,10 +14,10 @@ const NavItem = ({ activeStyle, to, children, isCategory, onClick }) => {
       to={to}
       className={({ isActive }) => {
         return `${isCategory ? mobileView : ""} ${
-          isActive ? `${activeStyle}`  : ""
+          isActive ? `${activeStyle}` : ""
         }`;
       }}
-      onClick={() => onClick(false)}
+      onClick={onClick}
     >
       {children}
     </NavLink>
@@ -28,20 +29,20 @@ NavItem.propTypes = {
   to: propTypes.string,
   children: propTypes.node,
   isCategory: propTypes.bool,
-  onClick: propTypes.func
+  onClick: propTypes.func,
 };
 
 function Navbar() {
   const { order } = useShopiContext();
-  const { count, scaled, email } = useShopiContext();
+  const { count, scaled, resetData, actualUser } =
+    useShopiContext();
   const [categories, setCategories] = useState(null);
   const [isShowDisplayMenu, setIsShowDisplayMenu] = useState(false);
   const activeStyle = "underline font-bold underline-offset-4";
-
   const handleIsShowDisplayMenu = (showOrNot) => {
-    if(showOrNot == false) {
-      setIsShowDisplayMenu(false)
-      return
+    if (showOrNot == false) {
+      setIsShowDisplayMenu(false);
+      return;
     }
     setIsShowDisplayMenu(!isShowDisplayMenu);
   };
@@ -64,28 +65,31 @@ function Navbar() {
     get();
   }, []);
 
-  const userDataArray = [
+  let userDataArray = [
     { title: "Profile", to: "my-account" },
     { title: "Orders", to: "my-orders" },
   ];
 
-    const toEmail = email == null ? "/" : "/home"
+  //Si actualUser.email no existe entonces no renderizamos profile
+  if (actualUser?.email == undefined) {
+    userDataArray = userDataArray.slice(1);
+  }
 
   return (
-    <header className="fixed  z-10 top-0 w-full bg-white py-2">
+    <header className="fixed  z-10 top-0 pt-3 w-full bg-white py-2">
       <nav className=" flex justify-between flex-row md:flex-row  ml-5 mr-5">
         <ul className="flex gap-4">
           <li>
-            <NavItem activeStyle={activeStyle} to={toEmail} onClick={handleIsShowDisplayMenu}>
-              <span className="font-bold text-green-600">
-                Shop
-              </span>
-              <span className="font-bold text-amber-950">
-                pi!
-              </span>
+            <NavItem
+              activeStyle={activeStyle}
+              to={"/"}
+              onClick={handleIsShowDisplayMenu}
+            >
+              <span className="font-bold text-green-600">Shop</span>
+              <span className="font-bold text-amber-950">pi!</span>
             </NavItem>
           </li>
-          
+
           {categories
             ? categories.map((category, id) => {
                 if (category == "men's clothing") {
@@ -148,13 +152,33 @@ function Navbar() {
           }`}
         >
           <li>
-            <a className="font-light underline">{email}</a>
+            <a className="font-light underline">{actualUser ? actualUser.email : null}</a>
           </li>
+          {actualUser ? (
+            <li>
+              <NavItem to={`/sign-in`} onClick={resetData}>
+                Sign out
+              </NavItem>
+            </li>
+          ) : (
+            <li>
+              <NavItem activeStyle={activeStyle} to={`/sign-in`}>
+                Sign in
+              </NavItem>
+            </li>
+          )}
+
           {userDataArray.map(({ title, to }, i) => {
             return (
               <li key={i}>
-                <NavItem activeStyle={activeStyle} to={`/${to}`} onClick={handleIsShowDisplayMenu}>
-                  <span className="px-1">{title}</span>
+                <NavItem
+                  activeStyle={actualUser ? activeStyle : null}
+                  to={actualUser ?  `/${to}` : "/sign-in" }
+                  onClick={() => {
+                    handleIsShowDisplayMenu(false);
+                  }}
+                >
+                    <span className="px-1">{title}</span>
                   {title == "Orders" ? (
                     <span className="text-red-600 font-bold">
                       {order.length}
@@ -166,7 +190,11 @@ function Navbar() {
           })}
 
           <li>
-            <NavItem to={`/shopping-cart`} activeStyle={activeStyle} onClick={handleIsShowDisplayMenu}>
+            <NavItem
+              to={actualUser?.email ? `/shopping-cart` : "/sign-in"}
+              activeStyle={actualUser ? activeStyle : null}
+              onClick={() => handleIsShowDisplayMenu(false)}
+            >
               <div className="flex ">
                 <ShoppingCartIcon
                   className={`${
@@ -182,7 +210,6 @@ function Navbar() {
     </header>
   );
 }
-
 
 const ThreePoints = () => {
   return (
